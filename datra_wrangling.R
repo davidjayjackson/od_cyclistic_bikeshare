@@ -11,8 +11,10 @@ directory_path <- "./data"
 # Read all CSV files in the directory and combine into a single data frame
 data_frames <- lapply(list.files(directory_path, pattern = "\\.csv$", full.names = TRUE), read_csv) 
 bikerides <- bind_rows(data_frames) |> filter(!is.na(end_station_name)) |>
-  select(-ride_id,-ended_at,-end_station_name,-end_station_id,-start_station_id)
+  select(-c(ride_id,end_station_name,end_station_id,start_station_id))
 
+## Drop Rows with missing start or end station names.
+bikerides <- bikerides |> filter(!is.na(start_station_name))
 # Extract Start date, start day,start hour
 
 # Assuming you have a data frame called "combined_data" with a "started_at" column
